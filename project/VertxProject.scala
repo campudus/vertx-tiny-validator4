@@ -57,7 +57,10 @@ trait VertxProject extends Build {
     ) ++ module.scalaVersion.map(_ => "io.vertx" %% "lang-scala" % vertxScalaVersion % "provided").toList,
     libraryDependencies ++= dependencies,
     libraryDependencies in fatJar += "io.vertx" % "vertx-hazelcast" % vertxVersion,
-    
+
+    // Disable using the Scala version in output paths and artifacts
+    crossPaths := false,
+
     // Fork JVM to allow Scala in-flight compilation tests to load the Scala interpreter
     fork in Test := true,
     
@@ -106,7 +109,7 @@ trait VertxProject extends Build {
     val modName = name.value
     val modVersion = version.value
 
-    val moduleName = s"$modOwner~${modName}~$modVersion"
+    val moduleName = s"$modOwner~$modName~$modVersion"
     val moduleDir = target.value / "mods" / moduleName
 
     (moduleName, moduleDir)

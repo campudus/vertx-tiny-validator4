@@ -1,18 +1,22 @@
 # vertx-tiny-validator4
 
-Vert.x module to validate JSON against a schema (see http://json-schema.org/)
+Vert.x module to validate JSON against a [json-schema](http://json-schema.org/) [draft v4](http://json-schema.org/latest/json-schema-core.html).
 
-This module relies internally on the JavaScript implementation of JSON-Schema by Francis Galiegue (see https://github.com/fge/json-schema-validator),
-licensed under the [LGPLv3](https://github.com/fge/json-schema-validator/blob/master/LICENSE) and [ASL 2.0](https://github.com/fge/json-schema-validator/blob/master/LICENSE). So if you use this module, don't forget to give credit to Francis.
+Use [json-schema](http://json-schema.org/) [draft v4](http://json-schema.org/latest/json-schema-core.html) to validate simple values and complex objects using a rich [validation vocabulary](http://json-schema.org/latest/json-schema-validation.html) ([examples](http://json-schema.org/examples.html)).
+
+This module relies heavily on [Tiny Validator (for v4)](https://github.com/geraintluff/tv4) which is written in javascript.
 
 ## Requirements
+
 * Vert.x 2.1.x
 * Vert.x lang-js (lang-rhino)
 
-## Requirements for Testing
-* Vert.x lang-scala 1.1.0-M1
+## Requirements for testing
+
+Tests are written in Scala. Therefore you need Vert.x lang-scala.
 
 ## Installation
+
 `vertx install com.campudus~vertx-tiny-validator4~1.0.0`
 
 ## Configuration
@@ -25,17 +29,17 @@ licensed under the [LGPLv3](https://github.com/fge/json-schema-validator/blob/ma
 * `address` - The address this module should register on the event bus. Defaults to `campudus.jsonvalidator`
 * `schemas` - This is an Array of schemas which are available to check against. Every schema in this Array is described by a JsonObject which should look like following:
 
-```
+
     {
       "key" : <keyForYourJsonSchema>,
       "schema" : <yourJsonSchema>
     }
-```
+
 
 * `key` - This is a key for this schema which is later used to define which schema should be used to check your JSON against. The key is a must have. If you don't define a key, you cant't deploy the module.
 * `schema` - This is the JsonSchema Object which describes your JsonSchema (see http://json-schema.org/)
 
-###Example Configuration
+### Example Configuration
     {
       "schemas" : [
         {
@@ -66,7 +70,7 @@ licensed under the [LGPLv3](https://github.com/fge/json-schema-validator/blob/ma
 ## Usage
 Currently there are three commands for this module.
 
-###Validate Json
+### Validate Json
 
 Use this action to validate a Json against a JsonSchema.
 
@@ -83,7 +87,7 @@ Use this action to validate a Json against a JsonSchema.
 * `key` - The key to the JsonSchema to validate against
 * `json` - The Json which should be validated
 
-###Get all schema keys
+### Get all schema keys
 
 Use this action to get all registered schema keys
 
@@ -91,7 +95,7 @@ Use this action to get all registered schema keys
       "action" : "getSchemaKeys",
     }
 
-###Add new JsonSchema
+### Add new JsonSchema
 
 Use this action to add a new JsonSchema.
 
@@ -124,7 +128,7 @@ Use this action to add a new JsonSchema.
 * `key` - The key for the new JsonSchema
 * `jsonSchema` - The JsonSchema which should be added
 
-###Referencing in a Json schema
+### Referencing in a Json schema
 In a Json schema it is possible to reference to a schema defined by an URI. This module does **not** support the natively supported schemes from the underlying Java library.
 This is because the Java library is using blocking code, which can't be used in a vertx module.
 
@@ -166,10 +170,10 @@ After that you can reference to this schema like following:
       }
     }
 
-###Reply messages
+### Reply messages
 The module will reply to all requests.  In the message, there will be either a `"status" : "ok"` or a `"status" : "error"`.
 
-####Reply to `validate` action
+#### Reply to `validate` action
 If the request could be processed without problems, it will result in an "ok" status. See an example here:
 
     {
@@ -207,7 +211,7 @@ If the request resulted in an error, a possible reply message looks like this:
     } ]
 
 
-####Reply to `getSchemaKeys` action
+#### Reply to `getSchemaKeys` action
 The request will result in an "ok" status and a JsonArray `schemas` with the schema keys. See an example here:
 
     {
@@ -215,7 +219,7 @@ The request will result in an "ok" status and a JsonArray `schemas` with the sch
       "schemas" : ["simple_schema", "complex_schema"]
     }
 
-####Reply to `addSchema` action
+#### Reply to `addSchema` action
 
 If the request could be processed without problems, it will result in an "ok" status. See an example here:
 
@@ -234,6 +238,6 @@ If the request resulted in an error, a possible reply message looks like this:
 * `error` - Possible error keys are: `EXISTING_SCHEMA_KEY` `INVALID_SCHEMA` `MISSING_JSON` `MISSING_SCHEMA_KEY`
 * `message` - The message which describes the error
 
-##Licence
+## Licence
 
 This project is freely available under the Apache 2 licence, fork, fix and send back :)

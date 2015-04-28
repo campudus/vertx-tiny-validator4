@@ -1,0 +1,11 @@
+{
+  "main": "main.js",
+  
+  "description": "Vert.x module to validate JSON against a schema (see http://json-schema.org/)",
+  "licenses": ["The Apache Software License Version 2.0"],
+  "author": "Alexander Vetter",
+  
+  "developers": ["Alexander Vetter"],
+  "keywords": ["json", "validator", "schema", "validate", "validation"],
+  "homepage": ""
+}
